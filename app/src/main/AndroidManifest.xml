@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.szchoiceway.aios.bridge">
+
+    <application
+        android:name=".BridgeApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:persistent="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:resizeableActivity="true"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".receiver.BridgeReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="aios.intent.action.phone.BOOT" />
+                <action android:name="aios.intent.action.music.BOOT" />
+                <action android:name="aios.intent.action.map.BOOT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="action.colink.remotecommand" />
+                <action android:name="action.colink.remote_navi" />
+                <action android:name="com.android.ecar.send" />
+                <action android:name="com.glsx.bootup.send.autonavi" />
+                <action android:name="action.colink.command_showway_cld" />
+                <action android:name="com.intent.action.MIC_CLICK" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receiver.PhoneBookReceive">
+            <intent-filter>
+                <action android:name="com.colink.zzj.contact.done" />
+                <action android:name="com.wanma.action.PLAY_TTS" />
+                <action android:name="com.glsx.tts.speaktext" />
+                <action android:name="com.android.ecar.send" />
+                <action android:name="com.ecar.call.idle" />
+                <action android:name="android.intent.action.ACC_ON_KEYEVENT" />
+                <action android:name="android.intent.action.ACC_OFF_KEYEVENT" />
+                <action android:name="android.intent.action.BLUETOOTH_PHONE_STATE" />
+                <action android:name="android.intent.action.ACTION_SCREEN_ON" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".DaemonService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_config" />
+        </service>
+    </application>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+</manifest>
