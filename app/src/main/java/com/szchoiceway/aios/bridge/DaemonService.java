@@ -22,13 +22,6 @@ import androidx.core.app.NotificationCompat;
 //https://github.com/madebyfrancisco/SplitScreenLauncher
 public class DaemonService extends Service {
     private static final String CHANNEL_ID = "mynotificationchannel";
-    //private static final String BACKGROUND_APP = "com.google.android.apps.maps";
-    private static final String BACKGROUND_APP = "net.dinglisch.android.taskerm";
-
-    //private static final String TOP_APP = "com.android.chrome";
-    private static final String TOP_APP = "com.waze";
-    //private static final String BOTTOM_APP = "com.google.android.apps.photos";
-    private static final String BOTTOM_APP = "com.sirius";
 
     public static final String LAUNCH_APPS = "launch_apps";
     public static final String SCREEN_TURN_ON = "screen_turn_on";
@@ -51,7 +44,7 @@ public class DaemonService extends Service {
         @Override
         public void run() {
             while (true) {
-                Data.addData(this.ctx, "background thread.run.");
+                Data.addLogData(this.ctx, "background thread.run.");
                 try {
                     Thread.sleep(30000);
                 } catch (InterruptedException e) {
@@ -61,18 +54,33 @@ public class DaemonService extends Service {
         }
     }
 
-    private static Logger runner = null;
+    private class Launcher implements Runnable {
+        private Context ctx;
+        private boolean turn_screen_on;
+
+        public Launcher(Context context, boolean screen_on){
+            this.ctx = context;
+            this.turn_screen_on = screen_on;
+        }
+
+        @Override
+        public void run(){
+            startApps(ctx, turn_screen_on);
+        }
+    }
+
+    private static Logger logger = null;
     PhoneBookReceive receive = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Data.addData(getApplicationContext(), "DaemonService.onCreate().");
+        Data.addLogData(getApplicationContext(), "DaemonService.onCreate().");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Data.addData(getApplicationContext(), "DaemonService.onStartCommand().");
+        Data.addLogData(getApplicationContext(), "DaemonService.onStartCommand().");
         Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 
         createNotificationChannel();
@@ -92,10 +100,10 @@ public class DaemonService extends Service {
 
         startForeground(1001, notification);
 
-        if (null == runner) {
-            runner = new Logger(this.getApplicationContext());
-            new Thread(runner).start();
-        }
+//        if (null == logger) {
+//            logger = new Logger(this.getApplicationContext());
+//            new Thread(logger).start();
+//        }
 
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
 
@@ -108,7 +116,8 @@ public class DaemonService extends Service {
             boolean launch = intent.getBooleanExtra(LAUNCH_APPS, false);
             if (launch) {
                 boolean screen_on = intent.getBooleanExtra(SCREEN_TURN_ON, false);
-                startApps(getApplicationContext(), screen_on);
+                Launcher l = new Launcher(getApplicationContext(), screen_on);
+                new Thread(l).start();
             }
         }
 
@@ -127,50 +136,104 @@ public class DaemonService extends Service {
             try {
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
-                Data.addData(context, "DaemonService --- Interrupted!");
+                Data.addLogData(context, "DaemonService --- Interrupted!");
             }
         }
 
         //start app
-        Data.addData(context, "DaemonService -- Starting Apps!");
+        Data.addLogData(context, "DaemonService -- Starting Apps!");
 
-        Intent background = context.getPackageManager().getLaunchIntentForPackage(BACKGROUND_APP);
-        if (null != background) {
-            background.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            background.addCategory("android.intent.category.LAUNCHER");
-            Data.addData(context, "DaemonService -- Launching Background App!");
-            context.startActivity(background);
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        String background_apps = Data.getPreference(context, Data.BACKGROUND_APPS);
+        if (null != background_apps && !background_apps.isEmpty()){
+            String[] apps = background_apps.split(";");
+            if (null != apps && apps.length > 0){
+                for (String app : apps) {
+                    if (null != app && !app.isEmpty()) {
+                        startApplication(context, app, null, "DaemonService -- Launching Background App ");
+                        //Give the background apps a little time to start before starting the foreground apps.
+                        try {
+                            Thread.sleep(4000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         }
 
-        Intent top_intent = context.getPackageManager().getLaunchIntentForPackage(TOP_APP);
-        if (null != top_intent) {
-            top_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            top_intent.addCategory("android.intent.category.LAUNCHER");
+//        Intent background = context.getPackageManager().getLaunchIntentForPackage(BACKGROUND_APP);
+//        if (null != background) {
+//            background.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//            background.addCategory("android.intent.category.LAUNCHER");
+//            Data.addLogData(context, "DaemonService -- Launching Background App!");
+//            context.startActivity(background);
+//            try {
+//                Thread.sleep(4000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+        String top = Data.getPreference(context, Data.TOP_APP);
+        if (null != top && !top.isEmpty()){
             Bundle bundle = ActivityOptionsCompat.makeBasic().toBundle();
             if (bundle != null) {
                 bundle.putInt(WINDOW_MODE, SPLIT_PRIMARY);
                 bundle.putInt(CREATE_MODE, SPLIT_TOP);
             }
-            Data.addData(context, "DaemonService -- Launching Top App!");
-            context.startActivity(top_intent, bundle);
+            startApplication(context, top, bundle, "DaemonService -- Launching Top App ");
         }
 
-        Intent bottom_intent = context.getPackageManager().getLaunchIntentForPackage(BOTTOM_APP);
-        if (null != bottom_intent) {
-            bottom_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            bottom_intent.addCategory("android.intent.category.LAUNCHER");
+//        Intent top_intent = context.getPackageManager().getLaunchIntentForPackage(TOP_APP);
+//        if (null != top_intent) {
+//            top_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//            top_intent.addCategory("android.intent.category.LAUNCHER");
+//            Bundle bundle = ActivityOptionsCompat.makeBasic().toBundle();
+//            if (bundle != null) {
+//                bundle.putInt(WINDOW_MODE, SPLIT_PRIMARY);
+//                bundle.putInt(CREATE_MODE, SPLIT_TOP);
+//            }
+//            Data.addLogData(context, "DaemonService -- Launching Top App!");
+//            context.startActivity(top_intent, bundle);
+//        }
+
+        String bottom = Data.getPreference(context, Data.BOTTOM_APP);
+        if (null != bottom && !bottom.isEmpty()){
             Bundle bundle = ActivityOptionsCompat.makeBasic().toBundle();
             if (bundle != null) {
                 bundle.putInt(WINDOW_MODE, SPLIT_SECONDARY);
                 bundle.putInt(CREATE_MODE, SPLIT_BOTTOM);
             }
-            Data.addData(context, "DaemonService -- Launching Bottom App!");
-            context.startActivity(bottom_intent, bundle);
+            startApplication(context, bottom, bundle, "DaemonService -- Launching Bottom App ");
+        }
+
+//        Intent bottom_intent = context.getPackageManager().getLaunchIntentForPackage(BOTTOM_APP);
+//        if (null != bottom_intent) {
+//            bottom_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//            bottom_intent.addCategory("android.intent.category.LAUNCHER");
+//            Bundle bundle = ActivityOptionsCompat.makeBasic().toBundle();
+//            if (bundle != null) {
+//                bundle.putInt(WINDOW_MODE, SPLIT_SECONDARY);
+//                bundle.putInt(CREATE_MODE, SPLIT_BOTTOM);
+//            }
+//            Data.addLogData(context, "DaemonService -- Launching Bottom App!");
+//            context.startActivity(bottom_intent, bundle);
+//        }
+    }
+
+    private void startApplication(Context ctx, String pkg, Bundle bundle, String msg){
+        if (null != pkg && !pkg.isEmpty() && null != ctx) {
+            Intent intent = ctx.getPackageManager().getLaunchIntentForPackage(pkg);
+            if (null != intent){
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                intent.addCategory("android.intent.category.LAUNCHER");
+                Data.addLogData(ctx, msg + pkg);
+                if (null == bundle){
+                    ctx.startActivity(intent);
+                } else {
+                    ctx.startActivity(intent, bundle);
+                }
+            }
         }
     }
 
@@ -192,7 +255,7 @@ public class DaemonService extends Service {
 
     @Override
     public void onDestroy() {
-        Data.addData(getApplicationContext(), "DaemonService destructor.");
+        Data.addLogData(getApplicationContext(), "DaemonService destructor.");
         Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
         if (null != receive) {
             unregisterReceiver(receive);
@@ -203,7 +266,7 @@ public class DaemonService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Data.addData(getApplicationContext(), "DaemonService.onBind().");
+        Data.addLogData(getApplicationContext(), "DaemonService.onBind().");
         // We don't provide binding, so return null
         return null;
     }

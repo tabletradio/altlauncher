@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -21,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Data.addData(getApplicationContext(),"MainActivity.onCreate()");
+        Data.addLogData(getApplicationContext(),"MainActivity.onCreate()");
 
         app = (BridgeApplication) getApplication();
 
@@ -31,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
         ApplicationInfo info = getApplicationContext().getApplicationInfo();
         boolean answer = (info.flags & 1) <= 0;
-        Data.addData(getApplicationContext(),"MainActivity.create " + answer);
-        Data.addData(getApplicationContext(),"MainActivity.create " + info.packageName);
+        Data.addLogData(getApplicationContext(),"MainActivity.create " + answer);
+        Data.addLogData(getApplicationContext(),"MainActivity.create " + info.packageName);
 
         updateTV();
 
@@ -42,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateTV(){
         TextView tv = findViewById(R.id.simple_text_view);
-        tv.setText(Data.getData(getApplicationContext()));
+        tv.setText(Data.getLogData(getApplicationContext()));
     }
 
     @Override
@@ -69,27 +66,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void onStop() {
         super.onStop();
-        Data.addData(getApplicationContext(),"MainActivity.onStop()");
+        Data.addLogData(getApplicationContext(),"MainActivity.onStop()");
     }
 
     public void onPause() {
         super.onPause();
-        Data.addData(getApplicationContext(),"MainActivity.onPause()");
+        Data.addLogData(getApplicationContext(),"MainActivity.onPause()");
     }
 
     public void onResume() {
         super.onResume();
-        Data.addData(getApplicationContext(),"MainActivity.onResume()");
+        Data.addLogData(getApplicationContext(),"MainActivity.onResume()");
     }
 
     public void onStart() {
         super.onStart();
-        Data.addData(getApplicationContext(),"MainActivity.onStart()");
+        Data.addLogData(getApplicationContext(),"MainActivity.onStart()");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Data.addData(getApplicationContext(),"MainActivity.onDestroy()");
+        Data.addLogData(getApplicationContext(),"MainActivity.onDestroy()");
     }
 }
