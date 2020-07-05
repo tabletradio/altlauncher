@@ -161,64 +161,21 @@ public class DaemonService extends Service {
             }
         }
 
-//        Intent background = context.getPackageManager().getLaunchIntentForPackage(BACKGROUND_APP);
-//        if (null != background) {
-//            background.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-//            background.addCategory("android.intent.category.LAUNCHER");
-//            Data.addLogData(context, "DaemonService -- Launching Background App!");
-//            context.startActivity(background);
-//            try {
-//                Thread.sleep(4000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
         String top = Data.getPreference(context, Data.TOP_APP);
-        if (null != top && !top.isEmpty()){
-            Bundle bundle = ActivityOptionsCompat.makeBasic().toBundle();
-            if (bundle != null) {
-                bundle.putInt(WINDOW_MODE, SPLIT_PRIMARY);
-                bundle.putInt(CREATE_MODE, SPLIT_TOP);
-            }
-            startApplication(context, top, bundle, "DaemonService -- Launching Top App ");
+        Bundle bundle = ActivityOptionsCompat.makeBasic().toBundle();
+        if (bundle != null) {
+            bundle.putInt(WINDOW_MODE, SPLIT_PRIMARY);
+            bundle.putInt(CREATE_MODE, SPLIT_TOP);
         }
-
-//        Intent top_intent = context.getPackageManager().getLaunchIntentForPackage(TOP_APP);
-//        if (null != top_intent) {
-//            top_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-//            top_intent.addCategory("android.intent.category.LAUNCHER");
-//            Bundle bundle = ActivityOptionsCompat.makeBasic().toBundle();
-//            if (bundle != null) {
-//                bundle.putInt(WINDOW_MODE, SPLIT_PRIMARY);
-//                bundle.putInt(CREATE_MODE, SPLIT_TOP);
-//            }
-//            Data.addLogData(context, "DaemonService -- Launching Top App!");
-//            context.startActivity(top_intent, bundle);
-//        }
+        startApplication(context, top, bundle, "DaemonService -- Launching Top App ");
 
         String bottom = Data.getPreference(context, Data.BOTTOM_APP);
-        if (null != bottom && !bottom.isEmpty()){
-            Bundle bundle = ActivityOptionsCompat.makeBasic().toBundle();
-            if (bundle != null) {
-                bundle.putInt(WINDOW_MODE, SPLIT_SECONDARY);
-                bundle.putInt(CREATE_MODE, SPLIT_BOTTOM);
-            }
-            startApplication(context, bottom, bundle, "DaemonService -- Launching Bottom App ");
+        bundle = ActivityOptionsCompat.makeBasic().toBundle();
+        if (bundle != null) {
+            bundle.putInt(WINDOW_MODE, SPLIT_SECONDARY);
+            bundle.putInt(CREATE_MODE, SPLIT_BOTTOM);
         }
-
-//        Intent bottom_intent = context.getPackageManager().getLaunchIntentForPackage(BOTTOM_APP);
-//        if (null != bottom_intent) {
-//            bottom_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-//            bottom_intent.addCategory("android.intent.category.LAUNCHER");
-//            Bundle bundle = ActivityOptionsCompat.makeBasic().toBundle();
-//            if (bundle != null) {
-//                bundle.putInt(WINDOW_MODE, SPLIT_SECONDARY);
-//                bundle.putInt(CREATE_MODE, SPLIT_BOTTOM);
-//            }
-//            Data.addLogData(context, "DaemonService -- Launching Bottom App!");
-//            context.startActivity(bottom_intent, bundle);
-//        }
+        startApplication(context, bottom, bundle, "DaemonService -- Launching Bottom App ");
     }
 
     private void startApplication(Context ctx, String pkg, Bundle bundle, String msg){
