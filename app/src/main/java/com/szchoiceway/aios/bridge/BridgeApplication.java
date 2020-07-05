@@ -19,6 +19,15 @@ public class BridgeApplication extends Application {
         Context ctx = getApplicationContext();
         Data.addLogData(ctx, "BridgeApplication.onCreate()");
 
+        Thread.setDefaultUncaughtExceptionHandler(
+                new Thread.UncaughtExceptionHandler() {
+                    @Override
+                    public void uncaughtException (Thread thread, Throwable e) {
+                        handleUncaught (thread, e);
+                    }
+                });
+
+
         setDefaultIfEmpty(ctx, Data.BACKGROUND_APPS, DEFAULT_BACKGROUND_APP);
         setDefaultIfEmpty(ctx, Data.TOP_APP, DEFAULT_TOP_APP);
         setDefaultIfEmpty(ctx, Data.BOTTOM_APP, DEFAULT_BOTTOM_APP);
