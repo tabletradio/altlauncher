@@ -20,14 +20,14 @@ public class BridgeService extends Service {
     private final class ServiceHandler extends Handler {
         public ServiceHandler(Looper looper) {
             super(looper);
-            Data.addData(getApplicationContext(), "BridgeService starting looper.");
+            Data.addLogData(getApplicationContext(), "BridgeService starting looper.");
         }
 
         @Override
         public void handleMessage(Message msg) {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
-            Data.addData(getApplicationContext(), "BridgeService.handleMessage()");
+            Data.addLogData(getApplicationContext(), "BridgeService.handleMessage()");
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
@@ -42,7 +42,7 @@ public class BridgeService extends Service {
 
     @Override
     public void onCreate() {
-        Data.addData(getApplicationContext(), "BridgeService.onCreate().");
+        Data.addLogData(getApplicationContext(), "BridgeService.onCreate().");
         // Start up the thread running the service. Note that we create a
         // separate thread because the service normally runs in the process's
         // main thread, which we don't want to block. We also make it
@@ -57,7 +57,7 @@ public class BridgeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Data.addData(getApplicationContext(), "BridgeService.onStartCommand().");
+        Data.addLogData(getApplicationContext(), "BridgeService.onStartCommand().");
         Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 
         // For each start request, send a message to start a job and deliver the
@@ -77,14 +77,14 @@ public class BridgeService extends Service {
 
     @Override
     public void onDestroy() {
-        Data.addData(getApplicationContext(), "BridgeService destructor.");
+        Data.addLogData(getApplicationContext(), "BridgeService destructor.");
         Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
     }
 
 
     @Override
     public IBinder onBind(Intent intent) {
-        Data.addData(getApplicationContext(), "BridgeService.onBind().");
+        Data.addLogData(getApplicationContext(), "BridgeService.onBind().");
         // We don't provide binding, so return null
         return null;
     }

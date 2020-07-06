@@ -12,9 +12,9 @@ public class BridgeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Data.addData(context, "BridgeReceiver.onReceive(). Action = " + action);
+        Data.addLogData(context, "BridgeReceiver.onReceive(). Action = " + action);
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)){
-            Data.addData(context, "BridgeReceiver.onReceive(). Asking service to start app.");
+            Data.addLogData(context, "BridgeReceiver.onReceive(). Asking service to start app.");
             Intent in = new Intent(context, DaemonService.class);
             in.putExtra(DaemonService.LAUNCH_APPS, true);
             in.putExtra(DaemonService.SCREEN_TURN_ON, false);

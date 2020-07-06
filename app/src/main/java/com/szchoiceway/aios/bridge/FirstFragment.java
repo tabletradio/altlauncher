@@ -25,7 +25,7 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Data.clearData(getContext());
+                Data.clearLogData(getContext());
                 ((MainActivity)getActivity()).updateTV();
             }
         });
@@ -34,7 +34,7 @@ public class FirstFragment extends Fragment {
         launchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Data.addData(getContext(), "Launch button clicked.");
+                Data.addLogData(getContext(), "Launch button clicked.");
                 Intent in = new Intent(view.getContext(), DaemonService.class);
                 in.putExtra(DaemonService.LAUNCH_APPS, true);
                 in.putExtra(DaemonService.SCREEN_TURN_ON, false);
