@@ -11,9 +11,9 @@ public class PhoneBookReceive extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Data.addData(context, "PhoneBookReceive.onReceive(). Action = " + action);
+        Data.addLogData(context, "PhoneBookReceive.onReceive(). Action = " + action);
         if (action.equals(Intent.ACTION_SCREEN_ON)){
-            Data.addData(context, "PhoneBookReceive.onReceive. Asking for service to start app.");
+            Data.addLogData(context, "PhoneBookReceive.onReceive. Asking for service to start app.");
             Intent in = new Intent(context, DaemonService.class);
             in.putExtra(DaemonService.LAUNCH_APPS, true);
             in.putExtra(DaemonService.SCREEN_TURN_ON, true);
