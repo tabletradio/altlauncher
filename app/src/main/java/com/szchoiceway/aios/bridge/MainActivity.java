@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateTV(){
-        TextView tv = findViewById(R.id.simple_text_view);
-        tv.setText(Data.getLogData(getApplicationContext()));
+        //TextView tv = findViewById(R.id.simple_text_view);
+        //tv.setText(Data.getLogData(getApplicationContext()));
     }
 
     @Override
