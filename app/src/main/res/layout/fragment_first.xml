@@ -35,4 +35,132 @@
         app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toEndOf="@+id/button_first" />
 
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="174dp"
+        android:layout_marginStart="27dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/bg_apps_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/backgroundAppList"
+        android:layout_width="409dp"
+        android:layout_height="204dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="381dp"
+        android:layout_marginEnd="71dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/new_app"
+        app:layout_constraintBottom_toTopOf="@+id/button_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backgroundAppList" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="376dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/button_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <TextView
+        android:id="@+id/topAppTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="336dp"
+        android:layout_marginEnd="161dp"
+        android:layout_marginStart="192dp"
+        android:layout_marginTop="21dp"
+        android:text="@string/top_app"
+        app:layout_constraintBottom_toTopOf="@+id/button_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <ListView
+        android:id="@+id/topAppList"
+        android:layout_width="409dp"
+        android:layout_height="104dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topAppTextView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="220dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="9dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/button_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topAppList" />
+
+    <TextView
+        android:id="@+id/btmAppTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="194dp"
+        android:layout_marginEnd="166dp"
+        android:layout_marginStart="187dp"
+        android:layout_marginTop="7dp"
+        android:text="@string/btm_app"
+        app:layout_constraintBottom_toTopOf="@+id/button_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+    <ListView
+        android:id="@+id/btmAppList"
+        android:layout_width="409dp"
+        android:layout_height="104dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btmAppTxt"
+        app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
