@@ -31,15 +31,8 @@ public class MainActivity extends AppCompatActivity {
         Data.addLogData(getApplicationContext(),"MainActivity.create " + answer);
         Data.addLogData(getApplicationContext(),"MainActivity.create " + info.packageName);
 
-        updateTV();
-
         Intent intent = new Intent(this, DaemonService.class);
         startService(intent);
-    }
-
-    public void updateTV(){
-        //TextView tv = findViewById(R.id.simple_text_view);
-        //tv.setText(Data.getLogData(getApplicationContext()));
     }
 
     @Override
