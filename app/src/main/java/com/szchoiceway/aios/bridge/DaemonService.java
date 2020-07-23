@@ -100,10 +100,6 @@ public class DaemonService extends Service {
 
         startForeground(1001, notification);
 
-//        if (null == logger) {
-//            logger = new Logger(this.getApplicationContext());
-//            new Thread(logger).start();
-//        }
 
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
 

@@ -13,8 +13,8 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="launch">Launch</string>
     <string name="reload">Reload</string>
-    <string name="bg_apps_label">Run Apps in background - Click on an App to delete it.</string>
+    <string name="bg_apps_label">Run Apps in background prior to split screen. Click on an App to remove it from the list.</string>
     <string name="new_app">Add new Background App</string>
-    <string name="top_app">Top App</string>
-    <string name="btm_app">Bottom App</string>
+    <string name="top_app">Top App for Split Screen</string>
+    <string name="btm_app">Bottom App for Split Screen</string>
 </resources>
