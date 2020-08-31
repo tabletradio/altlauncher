@@ -54,6 +54,17 @@ public class Data {
         return prefs.getString(name, "");
     }
 
+    public static long getLongPreference(Context context, String name){
+        String val = getPreference(context, name);
+        long answer = 0;
+        try {
+            answer = Long.parseLong(val);
+        } catch(NumberFormatException e){
+            ;
+        }
+        return answer;
+    }
+
     private static String getDateTime(){
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd-HH:mm:ss", Locale.getDefault());
         return sdf.format(new Date());

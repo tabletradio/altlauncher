@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.widget.Toast;
 
 import com.szchoiceway.aios.bridge.receiver.PhoneBookReceive;
@@ -143,15 +144,16 @@ public class DaemonService extends Service {
         if (null != background_apps && !background_apps.isEmpty()){
             String[] apps = background_apps.split(";");
             if (null != apps && apps.length > 0){
+                long delay = 4;
+                long tmp = Data.getLongPreference(context,"delay_after_app_launch");
+                if (tmp > 0){
+                    delay = tmp;
+                }
                 for (String app : apps) {
                     if (null != app && !app.isEmpty()) {
                         startApplication(context, app, null, "DaemonService -- Launching Background App ");
                         //Give the background apps a little time to start before starting the foreground apps.
-                        try {
-                            Thread.sleep(4000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        SystemClock.sleep(delay * 1000);
                     }
                 }
             }
