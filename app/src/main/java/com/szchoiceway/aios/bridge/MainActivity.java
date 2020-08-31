@@ -9,7 +9,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+
+import com.szchoiceway.aios.bridge.service.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 

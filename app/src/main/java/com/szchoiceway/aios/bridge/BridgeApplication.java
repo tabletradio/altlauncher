@@ -19,6 +19,10 @@ public class BridgeApplication extends Application {
                         handleUncaught (thread, e);
                     }
                 });
+        String currentVal = Data.getPreference(ctx, "delay_after_app_launch");
+        if (null == currentVal || currentVal.trim().isEmpty()){
+            Data.setPreference(ctx, "delay_after_app_launch", "4");
+        }
     }
 
 

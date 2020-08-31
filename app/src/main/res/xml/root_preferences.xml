@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="https://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/messages_header">
+
+        <EditTextPreference
+            app:key="delay_after_app_launch"
+            app:title="@string/background_app_delay_title"
+            android:inputType="numberDecimal"
+            android:digits="0123456789"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/feedback_header">
+
+        <Preference
+            app:key="send_log"
+            app:title="Send logs to developer" />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
