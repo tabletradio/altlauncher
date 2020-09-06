@@ -1,10 +1,8 @@
 package com.szchoiceway.aios.bridge;
 
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,10 +16,14 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import static com.szchoiceway.aios.bridge.util.AppUtil.getAppIcon;
+import static com.szchoiceway.aios.bridge.util.AppUtil.getAppName;
 
 public class FirstFragment extends Fragment implements AdapterView.OnItemClickListener {
 
@@ -46,7 +48,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
     private AppType currentAppType;
     PopupWindow popup;
 
-    private static final App noneSelected = new App(null, "", "None Selected.");
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,21 +87,21 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
         PackageManager pm = getContext().getPackageManager();
 
         //Background items
-        bgItems = getListFromPref(pm, Data.BACKGROUND_APPS);
+        bgItems = App.getListFromPref(getContext(), pm, Data.BACKGROUND_APPS);
         bgListView = view.findViewById(R.id.backgroundAppList);
         bgAdapter = new ApplicationListViewAdapter(getContext(), R.layout.selectedapp, bgItems);
         bgListView.setAdapter(bgAdapter);
         bgListView.setOnItemClickListener(this);
 
         //Top app
-        topItem = getListFromPref(pm, Data.TOP_APP);
+        topItem = App.getListFromPref(getContext(), pm, Data.TOP_APP);
         topListView = view.findViewById(R.id.topAppList);
         topAdapter = new ApplicationListViewAdapter(getContext(), R.layout.selectedapp, topItem);
         topListView.setAdapter(topAdapter);
         topListView.setOnItemClickListener(this);
 
         //Bottom app
-        btmItem = getListFromPref(pm, Data.BOTTOM_APP);
+        btmItem = App.getListFromPref(getContext(), pm, Data.BOTTOM_APP);
         btmListView = view.findViewById(R.id.btmAppList);
         btmAdapter = new ApplicationListViewAdapter(getContext(), R.layout.selectedapp, btmItem);
         btmListView.setAdapter(btmAdapter);
@@ -109,101 +111,65 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
     private void setApp(AppType type, App app){
         PackageManager pm = getContext().getPackageManager();
         if (type == AppType.APP_TOP){
-            Data.setPreference(getContext(), Data.TOP_APP, app.getPkg());
+            Data.setPreference(getContext(), Data.TOP_APP, app.getPrefString());
             topAdapter.remove(topAdapter.getItem(0));
             topAdapter.add(app);
             topAdapter.notifyDataSetChanged();
+            Data.addLogData(getContext(), "FirstFragment.setApp. Set top app to " + app.getPrefString());
         } else if (type == AppType.APP_BTM){
-            Data.setPreference(getContext(), Data.BOTTOM_APP, app.getPkg());
+            Data.setPreference(getContext(), Data.BOTTOM_APP, app.getPrefString());
             btmAdapter.remove(btmAdapter.getItem(0));
             btmAdapter.add(app);
             btmAdapter.notifyDataSetChanged();
+            Data.addLogData(getContext(), "FirstFragment.setApp. Set bottom app to " + app.getPrefString());
         } else if (type == AppType.APP_BG){
             if (!app.getPkg().equals("")){
-                bgAdapter.remove(noneSelected);
+                bgAdapter.remove(App.NONE_SELECTED);
             }
-            addToBgPreference(app.getPkg());
+            App.addToBgPreference(getContext(), app);
             bgAdapter.add(app);
             bgAdapter.notifyDataSetChanged();
         }
     }
 
-    private List<App> getListFromPref(PackageManager pm, String prefName) {
-        List<App> apps = new ArrayList<>();
-        String all = Data.getPreference(getContext(), prefName);
-        if (null != all && all.length() > 0){
-            String[] myApps = all.split(";");
-            if (null != myApps && myApps.length > 0) {
-                for (String a : myApps) {
-                    Drawable drw = getAppIcon(a, pm);
-                    String name = getAppName(a, pm);
-                    App tmp = new App(drw, a, name);
-                    apps.add(tmp);
-                }
-            }
-        }
-        if (apps.isEmpty()){
-            apps.add(noneSelected);
-        }
-        return apps;
-    }
 
-    private String getAppName(String pkg, PackageManager pm) {
-        String nm = pkg;
-        try {
-            CharSequence cs = pm.getApplicationLabel(pm.getApplicationInfo(pkg, PackageManager.GET_META_DATA));
-            nm = cs.toString();
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        };
-        return nm;
-    }
 
-    private Drawable getAppIcon(String pkg, PackageManager pm){
-        Drawable dr;
-        try {
-            dr = pm.getApplicationIcon(pkg);
-        } catch (PackageManager.NameNotFoundException e){
-            dr = null;
-        }
-        return dr;
-    }
+
 
     private List<App> getAllApps(){
         PackageManager pm = getContext().getPackageManager();
         List<App> all = new ArrayList<>();
-        all.add(noneSelected);
-        List<PackageInfo> pkgs = pm.getInstalledPackages(0);
-        if (null != pkgs && !pkgs.isEmpty()){
-            for (PackageInfo pf : pkgs){
-                ApplicationInfo inf = pf.applicationInfo;
-                if (null != inf && null != inf.name){
-                    String nm = getAppName(inf.packageName, pm);
-                    App tmp = new App(getAppIcon(inf.packageName, pm), inf.packageName, nm);
+        all.add(App.NONE_SELECTED);
+        Intent main = new Intent(Intent.ACTION_MAIN, null);
+        main.addCategory(Intent.CATEGORY_LAUNCHER);
+        List<ResolveInfo> infos = pm.queryIntentActivities(main,0);
+        Collections.sort(infos, new ResolveInfo.DisplayNameComparator(pm));
+
+        if (null != infos && !infos.isEmpty()){
+            for (ResolveInfo inf : infos){
+                if (null != inf){
+                    String nm = getAppName(inf.activityInfo.packageName, pm);
+                    App tmp = new App(getAppIcon(inf.activityInfo.packageName, pm), inf.activityInfo.packageName, nm,
+                            inf.activityInfo.name);
                     all.add(tmp);
                 }
             }
         }
+        //List<PackageInfo> pkgs = pm.getInstalledPackages(0);
+        //if (null != pkgs && !pkgs.isEmpty()){
+        //    for (PackageInfo pf : pkgs){
+        //        ApplicationInfo inf = pf.applicationInfo;
+        //        if (null != inf && null != inf.name){
+        //            String nm = getAppName(inf.packageName, pm);
+        //            App tmp = new App(getAppIcon(inf.packageName, pm), inf.packageName, nm);
+        //            all.add(tmp);
+        //        }
+        //    }
+        //}
         return all;
     }
 
-    private void addToBgPreference(String pkg){
-        String bg = Data.getPreference(getContext(), Data.BACKGROUND_APPS);
-        if (bg.length() > 1){
-            bg = bg + ";";
-        }
-        bg = bg + pkg;
-        Data.setPreference(getContext(), Data.BACKGROUND_APPS, bg);
-    }
 
-    private void removeFromBgPreference(String pkg){
-        String bg = Data.getPreference(getContext(), Data.BACKGROUND_APPS);
-        String upd = bg.replaceAll(pkg, "");
-        upd = upd.replaceAll(";;", ";");//Replace consecutive semicolons with one.
-        upd = upd.replaceAll(";$", "");//Remove extraneous semicolon at the end
-        upd = upd.replaceAll("^;", "");//Remove extraneous semicolon at the beginning
-        Data.setPreference(getContext(), Data.BACKGROUND_APPS, upd);
-    }
 
     //https://stackoverflow.com/questions/5944987/how-to-create-a-popup-window-popupwindow-in-android
     private void showAll(View view, List<App> existing){
@@ -244,14 +210,16 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
         //Remove from the background list
         if (parent.getId() == R.id.backgroundAppList) {
             currentAppType = AppType.NONE;
-            String toRemove = bgItems.get(position).getPkg();
-            if (!toRemove.equals("")) {
-                removeFromBgPreference(toRemove);
+            App toRemove = bgItems.get(position);
+            if (null != toRemove && null != toRemove.getPrefString() && !toRemove.getPrefString().equals("")) {
+                App.removeFromBgPreference(getContext(), toRemove);
                 bgAdapter.remove(bgAdapter.getItem(position));
                 if (bgAdapter.isEmpty()) {
-                    bgAdapter.add(noneSelected);
+                    bgAdapter.add(App.NONE_SELECTED);
                 }
                 bgAdapter.notifyDataSetChanged();
+            } else {
+                Data.addLogData(getContext(), "FirstFragment.onIemClick remove bg called with empty App.");
             }
         }
 
