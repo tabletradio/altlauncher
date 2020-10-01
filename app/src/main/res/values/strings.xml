@@ -17,4 +17,16 @@
     <string name="new_app">Add new Background App</string>
     <string name="top_app">Top App for Split Screen</string>
     <string name="btm_app">Bottom App for Split Screen</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Settings</string>
+    <string name="choose_email_client">Choose email client</string>
+    <string name="feedback_header">Feedback</string>
+
+    <!-- Messages Preferences -->
+    <string name="background_app_delay_title">Seconds to delay after starting each background app. Must be greater than 0.</string>
+    <string name="delay_after_fast_boot_title">Seconds to delay after fast boot, prior to launching apps. Must be greater than 0.</string>
+    <string name="delay_after_boot_title">Seconds to delay after normal boot, prior to launching apps. Must be 0 or greater.</string>
+    <string name="reply_title">Default reply action</string>
 </resources>

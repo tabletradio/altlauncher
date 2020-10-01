@@ -9,6 +9,20 @@
             android:digits="0123456789"
             app:useSimpleSummaryProvider="true" />
 
+        <EditTextPreference
+            app:key="delay_after_fast_boot"
+            app:title="@string/delay_after_fast_boot_title"
+            android:inputType="numberDecimal"
+            android:digits="0123456789"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="delay_after_boot"
+            app:title="@string/delay_after_boot_title"
+            android:inputType="numberDecimal"
+            android:digits="0123456789"
+            app:useSimpleSummaryProvider="true" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/feedback_header">

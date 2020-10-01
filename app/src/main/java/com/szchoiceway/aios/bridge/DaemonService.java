@@ -28,7 +28,7 @@ public class DaemonService extends Service {
     private static final String CHANNEL_ID = "mynotificationchannel";
 
     public static final String LAUNCH_APPS = "launch_apps";
-    public static final String SCREEN_TURN_ON = "screen_turn_on";
+    public static final String BOOT = "boot";
 
     public static final String WINDOW_MODE = "android.activity.windowingMode";
     public static final int SPLIT_PRIMARY = 3;
@@ -37,43 +37,21 @@ public class DaemonService extends Service {
     public static final int SPLIT_TOP = 0;
     public static final int SPLIT_BOTTOM=1;
 
-
-    private class Logger implements Runnable {
-        private Context ctx;
-
-        public Logger(Context context){
-            this.ctx = context;
-        }
-
-        @Override
-        public void run() {
-            while (true) {
-                Data.addLogData(this.ctx, "background thread.run.");
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     private class Launcher implements Runnable {
         private Context ctx;
-        private boolean turn_screen_on;
+        private boolean boot;
 
-        public Launcher(Context context, boolean screen_on){
+        public Launcher(Context context, boolean boot){
             this.ctx = context;
-            this.turn_screen_on = screen_on;
+            this.boot = boot;
         }
 
         @Override
         public void run(){
-            startApps(ctx, turn_screen_on);
+            startApps(ctx, boot);
         }
     }
 
-    private static Logger logger = null;
     PhoneBookReceive receive = null;
 
     @Override
@@ -115,8 +93,8 @@ public class DaemonService extends Service {
         if (null != intent) {
             boolean launch = intent.getBooleanExtra(LAUNCH_APPS, false);
             if (launch) {
-                boolean screen_on = intent.getBooleanExtra(SCREEN_TURN_ON, false);
-                Launcher l = new Launcher(getApplicationContext(), screen_on);
+                boolean boot = intent.getBooleanExtra(BOOT, true);
+                Launcher l = new Launcher(getApplicationContext(), boot);
                 new Thread(l).start();
             }
         }
@@ -131,10 +109,17 @@ public class DaemonService extends Service {
         //Data.addData(this, "DaemonService constructor.");
     }
 
-    private void startApps(Context context, boolean screen_turn_on){
-        if (screen_turn_on){
+    private void startApps(Context context, boolean boot){
+        long allDelay = 0;
+        if (boot){
+            allDelay = Data.getLongPreference(context, "delay_after_boot");
+        } else {
+            allDelay = Data.getLongPreference(context, "delay_after_fast_boot");
+        }
+        if (allDelay > 0) {
+            allDelay = allDelay * 1000;
             try {
-                Thread.sleep(15000);
+                Thread.sleep(allDelay);
             } catch (InterruptedException e) {
                 Data.addLogData(context, "DaemonService --- Interrupted!");
             }
@@ -206,17 +191,6 @@ public class DaemonService extends Service {
             }
             Data.addLogData(ctx, msg);
             Data.addLogData(ctx, "DaemonService.StartApplication " + app.getPrefString());
-            //Intent intent = ctx.getPackageManager().getLaunchIntentForPackage(pkg);
-            //if (null != intent){
-            //    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            //    intent.addCategory("android.intent.category.LAUNCHER");
-            //    Data.addLogData(ctx, msg + pkg);
-            //    if (null == bundle){
-            //        ctx.startActivity(intent);
-            //    } else {
-            //        ctx.startActivity(intent, bundle);
-            //    }
-            //}
         } else {
             Data.addLogData(ctx, "DaemonService.StartApplication called with null/empty package.");
         }
