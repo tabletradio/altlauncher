@@ -23,6 +23,14 @@ public class BridgeApplication extends Application {
         if (null == currentVal || currentVal.trim().isEmpty()){
             Data.setPreference(ctx, "delay_after_app_launch", "4");
         }
+        currentVal = Data.getPreference(ctx, "delay_after_boot");
+        if (null == currentVal || currentVal.trim().isEmpty()){
+            Data.setPreference(ctx, "delay_after_boot", "0");
+        }
+        currentVal = Data.getPreference(ctx, "delay_after_fast_boot");
+        if (null == currentVal || currentVal.trim().isEmpty()){
+            Data.setPreference(ctx, "delay_after_fast_boot", "15");
+        }
     }
 
 

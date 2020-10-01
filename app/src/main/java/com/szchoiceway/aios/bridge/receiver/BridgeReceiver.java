@@ -17,7 +17,7 @@ public class BridgeReceiver extends BroadcastReceiver {
             Data.addLogData(context, "BridgeReceiver.onReceive(). Asking service to start app.");
             Intent in = new Intent(context, DaemonService.class);
             in.putExtra(DaemonService.LAUNCH_APPS, true);
-            in.putExtra(DaemonService.SCREEN_TURN_ON, false);
+            in.putExtra(DaemonService.BOOT, true);
             context.startForegroundService(in);
         }
     }

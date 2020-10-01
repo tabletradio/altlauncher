@@ -52,34 +52,63 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
             EditTextPreference pref = findPreference("delay_after_app_launch");
-            pref.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
-                @Override
-                public void onBindEditText(@NonNull EditText editText) {
-                    editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                }
-            });
-            pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (null != newValue){
-                        try {
-                            long value = Long.parseLong((String) newValue);
-                            if (value > 0){
-                                return true;
-                            }
-                        } catch(NumberFormatException e){
-                            return false;
-                        }
-                    }
-                    return false;
-                }
-            });
+            setListener(pref, false);
+
+            pref = findPreference("delay_after_fast_boot");
+            setListener(pref, false);
+
+            pref = findPreference("delay_after_boot");
+            setListener(pref, true);
 
             Preference send = findPreference("send_log");
             send.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     sendFeedback(getActivity());
+                    return false;
+                }
+            });
+        }
+    }
+
+    private static void setListener(EditTextPreference pref, boolean allowZero){
+        pref.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            }
+        });
+        if (allowZero){
+            pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (null != newValue) {
+                        try {
+                            long value = Long.parseLong((String) newValue);
+                            if (value >= 0) {
+                                return true;
+                            }
+                        } catch (NumberFormatException e) {
+                            return false;
+                        }
+                    }
+                    return false;
+                }
+            });
+        } else {
+            pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (null != newValue) {
+                        try {
+                            long value = Long.parseLong((String) newValue);
+                            if (value > 0) {
+                                return true;
+                            }
+                        } catch (NumberFormatException e) {
+                            return false;
+                        }
+                    }
                     return false;
                 }
             });

@@ -16,7 +16,7 @@ public class PhoneBookReceive extends BroadcastReceiver {
             Data.addLogData(context, "PhoneBookReceive.onReceive. Asking for service to start app.");
             Intent in = new Intent(context, DaemonService.class);
             in.putExtra(DaemonService.LAUNCH_APPS, true);
-            in.putExtra(DaemonService.SCREEN_TURN_ON, true);
+            in.putExtra(DaemonService.BOOT, false);
             context.startForegroundService(in);
         }
     }

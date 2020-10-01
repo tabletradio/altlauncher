@@ -36,24 +36,12 @@
                 <action android:name="aios.intent.action.map.BOOT" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="action.colink.remotecommand" />
-                <action android:name="action.colink.remote_navi" />
-                <action android:name="com.android.ecar.send" />
-                <action android:name="com.glsx.bootup.send.autonavi" />
-                <action android:name="action.colink.command_showway_cld" />
-                <action android:name="com.intent.action.MIC_CLICK" />
             </intent-filter>
         </receiver>
         <receiver android:name=".receiver.PhoneBookReceive">
             <intent-filter>
-                <action android:name="com.colink.zzj.contact.done" />
-                <action android:name="com.wanma.action.PLAY_TTS" />
-                <action android:name="com.glsx.tts.speaktext" />
-                <action android:name="com.android.ecar.send" />
-                <action android:name="com.ecar.call.idle" />
                 <action android:name="android.intent.action.ACC_ON_KEYEVENT" />
                 <action android:name="android.intent.action.ACC_OFF_KEYEVENT" />
-                <action android:name="android.intent.action.BLUETOOTH_PHONE_STATE" />
                 <action android:name="android.intent.action.ACTION_SCREEN_ON" />
             </intent-filter>
         </receiver>

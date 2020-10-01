@@ -70,7 +70,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
                 Data.addLogData(getContext(), "Launch button clicked.");
                 Intent in = new Intent(view.getContext(), DaemonService.class);
                 in.putExtra(DaemonService.LAUNCH_APPS, true);
-                in.putExtra(DaemonService.SCREEN_TURN_ON, false);
+                in.putExtra(DaemonService.BOOT, true);
                 view.getContext().startForegroundService(in);
             }
         });
