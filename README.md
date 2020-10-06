@@ -25,6 +25,9 @@ To get into the app, swipe down from the top of the screen to view notifications
 ## Background Apps
 At the top of the screen is the list of apps that will start and then be put in the background. They are started in the order shown. To add a new one, click the "Add a new Background App" button, and select the desired app. To remove an app, click on it.
 
+## Services
+Below the background apps is the list of services that will be started. They are started in the order shown. To add a new one, click the "Add New Service to Start" button, and select the desired service. To remove a service, click on it.
+
 ## Top and Bottom Apps
 Below the background apps are the two apps to launch in split screen mode. To select the top or bottom app, click on either "None Selected" or the app, and choose the desired app in the popup.  
 
@@ -36,4 +39,18 @@ Under the 3-dots menu in the top right, you can access the Settings screen.
 
 The "Seconds to delay after starting each background app" controls how long after launching a background app the altlauncher waits before moving on to the next action. The default length is 4 seconds, and can be changed as needed. Note that 1 is the smallest allowed setting.
 
+The "Seconds to delay after starting each service" controls how long after launching a service the altlauncher waits before moving on to the next action.
+
+The "Seconds to delay after fast boot..." setting controls how long the altlauncher waits after being notified that fast boot has completed prior to launching apps.
+
+The "Seconds to delay after normal boot..." setting controls how long the altlauncher waits after being notified that boot has completed prior to launching apps.
+
+Note that the altlauncher does not get notified immediately after the normal boot. 
+
 If requested, you can click on the "Send logs to developer" button. That gathers logs, and starts your email client to allow you to send the email. Add details about your issue, and send the email. 
+
+## Tasker integration
+To start Tasker so that it starts performing actions, do the following:
+1. Select the following Tasker service to be launched: `com.joaomgcd.taskerm.plugin.ServiceRequestQuery`
+   1. There is generally no need to launch the Tasker app itself.
+1. In Tasker, if you set up a profile with `Profile->Event->Tasker->Monitor Start`, that activates when Tasker starts up.
