@@ -148,6 +148,25 @@ public class DaemonService extends Service {
             }
         }
 
+        long afterServiceDelay = Data.getLongPreference(context, "delay_after_service_launch");
+
+        String services = Data.getPreference(context, Data.SERVICE_APPS);
+        if (null != services && !services.isEmpty()){
+            String[] srvs = services.split(App.APP_SEP);
+            if (null != srvs && srvs.length > 0){
+                for (String ser : srvs){
+                    if (null != ser && !ser.isEmpty()){
+                        App tmpApp = new App(ser);
+                        startService(context, tmpApp);
+                        //Give the background apps a little time to start before starting the foreground apps.
+                        if (afterServiceDelay > 0) {
+                            SystemClock.sleep(afterServiceDelay * 1000);
+                        }
+                    }
+                }
+            }
+        }
+
 
         String top = Data.getPreference(context, Data.TOP_APP);
         App topApp = new App(top);
@@ -166,6 +185,21 @@ public class DaemonService extends Service {
             bundle.putInt(CREATE_MODE, SPLIT_BOTTOM);
         }
         startApplication(context, btmApp, bundle, "DaemonService -- Launching Bottom App ");
+    }
+
+
+    private void startService(Context ctx, App app){
+        if (null != app && null != app.getPkg() && !app.getPkg().isEmpty() && null != app.getService() && !app.getService().isEmpty()){
+            Intent in = new Intent();
+            in.setComponent(new ComponentName(app.getPkg(), app.getService()));
+            try {
+                ComponentName cn = ctx.startService(in);
+                Data.addLogData(ctx, "DaemonService.StartService " + app.getPrefString());
+            } catch(Exception e){
+                Data.addLogData(ctx, "Unable to start service(1): " + app.getPkg() + " - " + app.getService());
+                Data.addLogData(ctx, "Unable to start service(2): " + e.getMessage());
+            }
+        }
     }
 
     //https://github.com/commonsguy/cw-omnibus/blob/master/Introspection/Launchalot/app/src/main/java/com/commonsware/android/launchalot/Launchalot.java

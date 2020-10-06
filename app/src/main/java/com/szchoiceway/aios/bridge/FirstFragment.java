@@ -1,8 +1,11 @@
 package com.szchoiceway.aios.bridge;
 
+import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -30,6 +33,10 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
     ListView bgListView;
     List<App> bgItems;
     ApplicationListViewAdapter bgAdapter;
+
+    ListView serviceListView;
+    List<App> serviceItems;
+    ApplicationListViewAdapter serviceAdapter;
 
     ListView topListView;
     List<App> topItem;
@@ -84,6 +91,13 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
             }
         });
 
+        view.findViewById(R.id.newServiceBtn).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                currentAppType = AppType.APP_SERVICE;
+                showServices(v, serviceItems);
+            }
+        });
+
         PackageManager pm = getContext().getPackageManager();
 
         //Background items
@@ -92,6 +106,13 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
         bgAdapter = new ApplicationListViewAdapter(getContext(), R.layout.selectedapp, bgItems);
         bgListView.setAdapter(bgAdapter);
         bgListView.setOnItemClickListener(this);
+
+        //Service Items
+        serviceItems = App.getListFromPref(getContext(), pm, Data.SERVICE_APPS);
+        serviceListView = view.findViewById(R.id.servicesList);
+        serviceAdapter = new ApplicationListViewAdapter(getContext(), R.layout.selectedapp, serviceItems);
+        serviceListView.setAdapter(serviceAdapter);
+        serviceListView.setOnItemClickListener(this);
 
         //Top app
         topItem = App.getListFromPref(getContext(), pm, Data.TOP_APP);
@@ -110,12 +131,20 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
 
     private void setApp(AppType type, App app){
         PackageManager pm = getContext().getPackageManager();
-        if (type == AppType.APP_TOP){
+        if (type == AppType.APP_TOP) {
             Data.setPreference(getContext(), Data.TOP_APP, app.getPrefString());
             topAdapter.remove(topAdapter.getItem(0));
             topAdapter.add(app);
             topAdapter.notifyDataSetChanged();
             Data.addLogData(getContext(), "FirstFragment.setApp. Set top app to " + app.getPrefString());
+        } else if (type == AppType.APP_SERVICE){
+            //Make sure the "no apps selected" goes away when an app is selected.
+            if (!app.getPkg().equals("")){
+                serviceAdapter.remove(App.NONE_SELECTED);
+            }
+            App.addToServicePreference(getContext(), app);
+            serviceAdapter.add(app);
+            serviceAdapter.notifyDataSetChanged();
         } else if (type == AppType.APP_BTM){
             Data.setPreference(getContext(), Data.BOTTOM_APP, app.getPrefString());
             btmAdapter.remove(btmAdapter.getItem(0));
@@ -123,6 +152,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
             btmAdapter.notifyDataSetChanged();
             Data.addLogData(getContext(), "FirstFragment.setApp. Set bottom app to " + app.getPrefString());
         } else if (type == AppType.APP_BG){
+            //Make sure the "no apps selected" goes away when an app is selected.
             if (!app.getPkg().equals("")){
                 bgAdapter.remove(App.NONE_SELECTED);
             }
@@ -133,7 +163,32 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
     }
 
 
-
+    private List<App> getAllServices(){
+        PackageManager pm = getContext().getPackageManager();
+        List<App> all = new ArrayList<>();
+        all.add(App.NONE_SELECTED);
+        //Intent main = new Intent(Intent.ACTION_MAIN, null);
+        //main.addCategory(Intent.CATEGORY_LAUNCHER);
+        //List<ResolveInfo> infos = pm.queryIntentActivities(main,0);
+        //Collections.sort(infos, new ResolveInfo.DisplayNameComparator(pm));
+        List<PackageInfo> pkgs = pm.getInstalledPackages(PackageManager.GET_SERVICES);
+        if (null != pkgs && !pkgs.isEmpty()){
+            for (PackageInfo pkg : pkgs){
+                ServiceInfo[] services =  pkg.services;
+                if (null != services && services.length>0){
+                    for (ServiceInfo serv : services){
+                        if (serv.exported){
+                            String nm = getAppName(pkg.packageName, pm);
+                            App tmp = new App(getAppIcon(pkg.packageName, pm), pkg.packageName, nm,
+                                    "", serv.name);
+                            all.add(tmp);
+                        }
+                    }
+                }
+            }
+        }
+        return all;
+    }
 
 
     private List<App> getAllApps(){
@@ -150,7 +205,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
                 if (null != inf){
                     String nm = getAppName(inf.activityInfo.packageName, pm);
                     App tmp = new App(getAppIcon(inf.activityInfo.packageName, pm), inf.activityInfo.packageName, nm,
-                            inf.activityInfo.name);
+                            inf.activityInfo.name, "");
                     all.add(tmp);
                 }
             }
@@ -205,6 +260,38 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
         popup.showAtLocation(rootView, Gravity.CENTER, 0, 0);
     }
 
+    private void showServices(View view, List<App> existing){
+        //Inflate the layout of the popup
+        View popupView = inf.inflate(R.layout.all_apps, null);
+
+        PackageManager pm = getContext().getPackageManager();
+        allItems = getAllServices();
+        if (null != existing && !existing.isEmpty()){
+            for (App a : existing){
+                allItems.remove(a);
+            }
+        }
+        allListView = popupView.findViewById(R.id.allListView);
+        allAdapter = new ApplicationListViewAdapter(getContext(), R.layout.selectedapp, allItems);
+        allListView.setAdapter(allAdapter);
+        allListView.setOnItemClickListener(this);
+
+        //create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; //Let taps outside dismiss it
+        popup = new PopupWindow(popupView, 900, 1600, focusable);
+
+        // Set an elevation value for popup window
+        // Call requires API level 21
+        if(Build.VERSION.SDK_INT>=21){
+            popup.setElevation(5.0f);
+        }
+
+        //show the window
+        popup.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //Remove from the background list
@@ -220,6 +307,19 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
                 bgAdapter.notifyDataSetChanged();
             } else {
                 Data.addLogData(getContext(), "FirstFragment.onIemClick remove bg called with empty App.");
+            }
+        } else if (parent.getId() == R.id.servicesList){
+            currentAppType = AppType.NONE;
+            App toRemove = serviceItems.get(position);
+            if (null != toRemove && null != toRemove.getPrefString() && !toRemove.getPrefString().equals("")){
+                App.removeFromServicePreference(getContext(), toRemove);
+                serviceAdapter.remove(serviceAdapter.getItem(position));
+                if (serviceAdapter.isEmpty()){
+                    serviceAdapter.add(App.NONE_SELECTED);
+                }
+                serviceAdapter.notifyDataSetChanged();
+            } else {
+                Data.addLogData(getContext(), "FirstFragment.onIemClick remove service called with empty App.");
             }
         }
 
@@ -237,9 +337,16 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
             }
         } else {//Current app type set - user selected an app
             if (parent.getId() == R.id.allListView){//User clicked an app in the popup
-                if (currentAppType == AppType.APP_TOP){//Setting the Top app
+                if (currentAppType == AppType.APP_TOP) {//Setting the Top app
                     App tmp = allAdapter.getItem(position);
                     setApp(AppType.APP_TOP, tmp);
+                    if (null != popup) {
+                        popup.dismiss();
+                        popup = null;
+                    }
+                } else if (currentAppType == AppType.APP_SERVICE){//Setting the Service apps
+                    App tmp = allAdapter.getItem(position);
+                    setApp(AppType.APP_SERVICE, tmp);
                     if (null != popup){
                         popup.dismiss();
                         popup = null;
@@ -267,6 +374,7 @@ public class FirstFragment extends Fragment implements AdapterView.OnItemClickLi
     public enum AppType {
         NONE,
         APP_BG,
+        APP_SERVICE,
         APP_TOP,
         APP_BTM
     }

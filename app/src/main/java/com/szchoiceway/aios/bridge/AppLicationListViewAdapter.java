@@ -37,7 +37,11 @@ public class ApplicationListViewAdapter extends ArrayAdapter<App> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.nameView.setText(item.getName());
+        String nm = item.getName();
+        if (null != item.getService() && item.getService().length() > 0){
+            nm = nm + " - " + item.getService();
+        }
+        holder.nameView.setText(nm);
         holder.imageView.setImageDrawable(item.getImage());
 
         return convertView;
