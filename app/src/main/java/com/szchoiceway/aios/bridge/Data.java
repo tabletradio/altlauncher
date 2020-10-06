@@ -14,6 +14,7 @@ public class Data {
     private static final String LOG_PREF_NAME = "LOG_DATA";
 
     public static final String BACKGROUND_APPS = "BACKGROUND_APPS";
+    public static final String SERVICE_APPS = "SERVICE_APPS";
     public static final String TOP_APP = "TOP_APP";
     public static final String BOTTOM_APP = "BOTTOM_APP";
 

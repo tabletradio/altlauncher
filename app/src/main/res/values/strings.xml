@@ -15,9 +15,10 @@
     <string name="reload">Reload</string>
     <string name="bg_apps_label">Run Apps in background prior to split screen. Click on an App to remove it from the list.</string>
     <string name="new_app">Add new Background App</string>
+    <string name="new_service">Add new Service to start</string>
     <string name="top_app">Top App for Split Screen</string>
     <string name="btm_app">Bottom App for Split Screen</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Settings</string>
@@ -29,4 +30,15 @@
     <string name="delay_after_fast_boot_title">Seconds to delay after fast boot, prior to launching apps. Must be greater than 0.</string>
     <string name="delay_after_boot_title">Seconds to delay after normal boot, prior to launching apps. Must be 0 or greater.</string>
     <string name="reply_title">Default reply action</string>
+    <string name="delay_after_service_title">Seconds to delay after starting each service.</string>
+
+    <!-- about page -->
+    <string name="about_data">Copyright 2020 tabletradio. All Rights Reserved. https://github.com/tabletradio/\n\n
+        Licensed under the Apache 2.0 License. See https://github.com/tabletradio/altlauncher/blob/master/LICENSE\n\n
+        Based paritally on work in the Split-Screen Launcher: https://github.com/madebyfrancisco/SplitScreenLauncher\n\n
+        Based partially on the default Fragment App in Android Studio\n\n
+    </string>
+    <string name="about_title">About</string>
+    <string name="General">General</string>
+    <string name="view_logs">View Logs</string>
 </resources>

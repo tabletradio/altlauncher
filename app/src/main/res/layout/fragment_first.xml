@@ -9,25 +9,6 @@
     android:layout_height="match_parent"
     tools:context=".FirstFragment">
 
-    <Button
-        android:id="@+id/launch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/launch"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/newAppBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="71dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/new_app"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backgroundAppList" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
@@ -44,7 +25,7 @@
     <ListView
         android:id="@+id/backgroundAppList"
         android:layout_width="409dp"
-        android:layout_height="254dp"
+        android:layout_height="154dp"
         android:layout_marginEnd="1dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
@@ -53,53 +34,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
-    <ListView
-        android:id="@+id/topAppList"
-        android:layout_width="409dp"
-        android:layout_height="104dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topAppTextView" />
-
-    <ListView
-        android:id="@+id/btmAppList"
-        android:layout_width="409dp"
-        android:layout_height="104dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btmAppTxt" />
-
-    <TextView
-        android:id="@+id/topAppTextView"
+    <Button
+        android:id="@+id/newAppBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="161dp"
-        android:layout_marginStart="192dp"
-        android:layout_marginTop="21dp"
-        android:text="@string/top_app"
+        android:layout_marginEnd="71dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/new_app"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-    <TextView
-        android:id="@+id/btmAppTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="166dp"
-        android:layout_marginStart="187dp"
-        android:layout_marginTop="7dp"
-        android:text="@string/btm_app"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+        app:layout_constraintTop_toBottomOf="@+id/backgroundAppList" />
 
     <View
         android:id="@+id/divider"
@@ -113,6 +58,65 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newAppBtn" />
 
+
+    <ListView
+        android:id="@+id/servicesList"
+        android:layout_width="409dp"
+        android:layout_height="154dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" /><!--newAppBtn !-->
+
+    <Button
+        android:id="@+id/newServiceBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/new_service"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/servicesList" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newServiceBtn" />
+
+    <TextView
+        android:id="@+id/topAppTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="161dp"
+        android:layout_marginStart="192dp"
+        android:layout_marginTop="21dp"
+        android:text="@string/top_app"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider3" /><!--divider !-->
+
+    <ListView
+        android:id="@+id/topAppList"
+        android:layout_width="409dp"
+        android:layout_height="104dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topAppTextView" />
+
     <View
         android:id="@+id/divider2"
         android:layout_width="409dp"
@@ -124,6 +128,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topAppList" />
+
+    <TextView
+        android:id="@+id/btmAppTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="166dp"
+        android:layout_marginStart="187dp"
+        android:layout_marginTop="7dp"
+        android:text="@string/btm_app"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+
+    <ListView
+        android:id="@+id/btmAppList"
+        android:layout_width="409dp"
+        android:layout_height="104dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btmAppTxt" />
+
+    <Button
+        android:id="@+id/launch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launch"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btmAppList"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

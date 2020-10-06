@@ -1,10 +1,29 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="https://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory app:title="@string/General">
+
+        <Preference
+            app:key="about"
+            app:title="@string/about_title" />
+
+        <Preference
+            app:key="view_log"
+            app:title="View Logs" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/messages_header">
 
         <EditTextPreference
             app:key="delay_after_app_launch"
             app:title="@string/background_app_delay_title"
+            android:inputType="numberDecimal"
+            android:digits="0123456789"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="delay_after_service_launch"
+            app:title="@string/delay_after_service_title"
             android:inputType="numberDecimal"
             android:digits="0123456789"
             app:useSimpleSummaryProvider="true" />
@@ -30,7 +49,6 @@
         <Preference
             app:key="send_log"
             app:title="Send logs to developer" />
-
 
     </PreferenceCategory>
 
