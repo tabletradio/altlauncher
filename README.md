@@ -12,7 +12,7 @@ This app solves that problem. It allows you to launch apps on either boot or fas
 1. Go to [Releases](https://github.com/tabletradio/altlauncher/releases), and expand Assets under the most recent release. 
 1. Downioad altlauncher.apk to the Phoenix Radio. Either download it directiy on the radio, or download from elsewhere, and transfer the apk to the radio.
 1. Using the File Manager, click on the apk, and follow the prompts to install the app. 
-1. Be sure to click `Open` to open the app.
+1. **Be sure to click `Open` to open the app.**
 
 # Using the Launcher
 
