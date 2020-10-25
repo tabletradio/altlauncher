@@ -1,0 +1,5 @@
+Version 1.0 adds:
+* The ability to luanch services on boot
+
+Version 1.0.1 adds:
+* Fastlane metadata files

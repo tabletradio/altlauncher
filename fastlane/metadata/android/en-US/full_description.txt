@@ -1,0 +1,1 @@
+Launches apps and/or services on boot and fastboot on Phoenix Android and similar radios.
