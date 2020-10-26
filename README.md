@@ -6,7 +6,7 @@ This app solves that problem. It allows you to launch apps and services on eithe
 
 # Installation
 
-***NOTE:*** *When you install this app, it does not show up in the list of apps in the launcher that comes with the Phoenix radios. **During the installation process, be sure to click the "Open" button to run it once. From that point on, it will run in the background**. If you don't start it during the installation process, the only way to start it is with another app that launches apps (like CarWebGuru).*  
+***NOTE:*** *The Alt Launcher does not show up in the launcher that comes with the Phoenix radios. **During the installation process, be sure to click the "Open" button to run it once. From that point on, it will run in the background**. If you don't start it during the installation process, the only way to start it is with another app that launches apps (like CarWebGuru).*  
 
 ## Instructions
 1. Go to [Releases](https://github.com/tabletradio/altlauncher/releases), and expand Assets under the most recent release. 
