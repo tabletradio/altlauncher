@@ -2,7 +2,7 @@
 
 The Problem: Phoenix Radios Android tablet style radios do not allow for running apps on boot or fastboot.
 
-This app solves that problem. It allows you to launch apps and services on either boot or fastboot. It also can launch apps in split-screen mode.
+This app solves that problem. It allows you to launch apps and services on either boot or fastboot. It also launches apps in split-screen mode.
 
 # Installation
 
