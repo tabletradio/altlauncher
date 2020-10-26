@@ -1,3 +1,8 @@
+[1.0.2] 10/26/2020
+
+Added
+* altlauncher-30: Updated description, readme, gradle.
+
 [1.0.1] 10/25/2020 
 
 Added
