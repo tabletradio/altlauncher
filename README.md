@@ -51,6 +51,11 @@ Note that the Alt Launcher does not get notified immediately after the normal bo
 
 If requested, you can click on the "Send logs to developer" button. That gathers logs, and starts your email client to allow you to send the email. Add details about your issue, and send the email. 
 
+## Permissions
+The app requires the following permissions:
+1. RECEIVE_BOOT_COMPLETED - needed to be notified after cold boot so it can launch the apps.
+1. FOREGROUND_SERVICE - The default launcher on Phoenix Radios hides the application icon for the Alt Launcher. This means that by default, there is no way to get into the app to update configuration. The foreground service provides a consistent way to get back into the app.
+
 ## Tasker integration
 To start Tasker so that it starts performing actions after boot, do the following:
 1. Select the following Tasker service to be launched: `com.joaomgcd.taskerm.plugin.ServiceRequestQuery`

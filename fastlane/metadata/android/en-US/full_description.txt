@@ -42,6 +42,12 @@ Below the background apps are the two apps to launch in split screen mode. To
 select the top or bottom app, click on either "None Selected" or the app shown 
 in either the top or bottom sections, and choose the desired app in the popup.
 
+Permissions
+
+The app requires the following permissions:
+1. RECEIVE_BOOT_COMPLETED - needed to be notified after cold boot so it can launch the apps.
+2. FOREGROUND_SERVICE - The default launcher on Phoenix Radios hides the application icon for the Alt Launcher. This means that by default, there is no way to get into the app to update configuration. The foreground service provides a consistent way to get back into the app.
+
 Tasker
 
 To start Tasker so that it starts performing actions after boot, do the 

@@ -1,0 +1,28 @@
+[1.0.5] 1/5/2021
+Fixed
+* Removed Unnecessary permissions
+* Updated readme and description to describe why permissions are needed
+
+[1.0.4] 1/4/2021
+Fixed
+* Typo in class name
+
+[1.0.3] 10/27/2020
+
+Added
+* altlauncher-30: Updated description for F-Droid.
+
+[1.0.2] 10/26/2020
+
+Added
+* altlauncher-30: Updated description, readme, gradle.
+
+[1.0.1] 10/25/2020
+
+Added
+* altlauncher-30: Fastlane metadata files
+
+[1.0] 10/6/2020
+
+Added
+* altlauncher-26: The ability to launch services on boot
