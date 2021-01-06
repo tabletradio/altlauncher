@@ -61,4 +61,3 @@ To start Tasker so that it starts performing actions after boot, do the followin
 1. Select the following Tasker service to be launched: `com.joaomgcd.taskerm.plugin.ServiceRequestQuery`
    1. There is generally no need to launch the Tasker app itself.
 1. In Tasker, if you set up a profile with `Profile->Event->Tasker->Monitor Start`, that activates when Tasker starts up.
-
