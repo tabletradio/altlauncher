@@ -10,7 +10,11 @@ This app solves that problem. It allows you to launch apps and services on eithe
 
 ## Recommended Instructions
 1. Install from the [F-Droid](https://f-droid.org/en/packages/com.szchoiceway.aios.bridge/) App store.
-2. **Be sure to click `Open` to open the app.** at the end of the installation.
+1. After installation completes, launch the app by:
+    1. Within F-Droid, click on Settings
+    1. Then click "Manage installed apps"
+    1. Then click on "Alt Launcher"
+    1. Then click the "Open" button.
 
 ## Alternate Instructions
 1. Go to [Releases](https://github.com/tabletradio/altlauncher/releases), and expand Assets under the most recent release. 
