@@ -8,7 +8,15 @@ This app solves that problem. It allows you to launch apps and services on eithe
 
 ***NOTE:*** *The Alt Launcher does not show up in the launcher that comes with the Phoenix radios. **During the installation process, be sure to click the "Open" button to run it once. From that point on, it will run in the background**. If you don't start it during the installation process, the only way to start it is with another app that launches apps (like CarWebGuru).*  
 
-## Instructions
+## Recommended Instructions
+1. Install from the [F-Droid](https://f-droid.org/en/packages/com.szchoiceway.aios.bridge/) App store.
+1. After installation completes, launch the app by:
+    1. Within F-Droid, click on Settings
+    1. Then click "Manage installed apps"
+    1. Then click on "Alt Launcher"
+    1. Then click the "Open" button.
+
+## Alternate Instructions
 1. Go to [Releases](https://github.com/tabletradio/altlauncher/releases), and expand Assets under the most recent release. 
 1. Downioad altlauncher.apk to the Phoenix Radio. Either download it directiy on the radio, or download from elsewhere, and transfer the apk to the radio.
 1. Using the File Manager, click on the apk, and follow the prompts to install the app. 

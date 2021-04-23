@@ -226,6 +226,10 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    private static final String intro = "\n\nEmailing support, please fill out the following:"
+            + "\n\nDescribe the issue you are having: "
+            + "\nWhat have you tried to solve the problem: \n";
+
     public static void sendFeedback(Context context){
         String body = null;
         try {
@@ -234,6 +238,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
                     "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER +
                     "\n Logs: " + Data.getLogData(context);
+            body = intro + body;
         } catch (PackageManager.NameNotFoundException e) {
         }
         Intent intent = new Intent(Intent.ACTION_SEND);
