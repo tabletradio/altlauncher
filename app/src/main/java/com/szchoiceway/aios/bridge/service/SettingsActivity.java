@@ -217,13 +217,13 @@ public class SettingsActivity extends AppCompatActivity {
         popup.showAtLocation(view, Gravity.CENTER, 0, 0);
 
         // dismiss the popup window when touched
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                popup.dismiss();
-                return true;
-            }
-        });
+//        popupView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                popup.dismiss();
+//                return true;
+//            }
+//        });
     }
 
     private static final String intro = "\n\nEmailing support, please fill out the following:"
